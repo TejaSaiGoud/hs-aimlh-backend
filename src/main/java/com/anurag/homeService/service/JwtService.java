@@ -1,26 +1,28 @@
 package com.anurag.homeService.service;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+
+import javax.crypto.SecretKey;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
 
-      @Value("${jwt.secret}")
+      @Value("${jwt.secret:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}")
       private String secret;
 
-      @Value("${jwt.expiration}")
+      @Value("${jwt.expiration:86400000}")
       private long expiration;
 
       private SecretKey getSigningKey() {
-            byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
+            byte[] keyBytes = secret.trim().getBytes(StandardCharsets.UTF_8);
             return Keys.hmacShaKeyFor(keyBytes);
       }
 
